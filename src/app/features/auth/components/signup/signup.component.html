@@ -1,0 +1,156 @@
+<div class="signup-container">
+  <div class="bg-white rounded-lg shadow-lg p-8 w-full">
+    <h2 class="text-3xl font-bold text-center mb-2 text-gray-800">Create Account</h2>
+    <p class="text-center text-gray-600 mb-8">Join our community and start shopping</p>
+
+    <div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{ error }}
+    </div>
+
+    <div *ngIf="success" class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ success }}
+    </div>
+
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+      <!-- Full Name -->
+      <div class="mb-4">
+        <label for="fullName" class="block text-gray-700 font-semibold mb-2">Full Name</label>
+        <input
+          type="text"
+          id="fullName"
+          class="form-control"
+          [class.is-invalid]="submitted && f['fullName'].errors"
+          formControlName="fullName"
+          placeholder="Enter your full name"
+        />
+        <div *ngIf="submitted && f['fullName'].errors" class="invalid-feedback d-block">
+          <span *ngIf="f['fullName'].errors['required']">Full name is required</span>
+          <span *ngIf="f['fullName'].errors['minlength']">Full name must be at least 3 characters</span>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="mb-4">
+        <label for="email" class="block text-gray-700 font-semibold mb-2">Email Address</label>
+        <input
+          type="email"
+          id="email"
+          class="form-control"
+          [class.is-invalid]="submitted && f['email'].errors"
+          formControlName="email"
+          placeholder="Enter your email"
+        />
+        <div *ngIf="submitted && f['email'].errors" class="invalid-feedback d-block">
+          <span *ngIf="f['email'].errors['required']">Email is required</span>
+          <span *ngIf="f['email'].errors['email']">Please enter a valid email</span>
+        </div>
+      </div>
+
+      <!-- Phone Number -->
+      <div class="mb-4">
+        <label for="phoneNumber" class="block text-gray-700 font-semibold mb-2">Phone Number</label>
+        <input
+          type="text"
+          id="phoneNumber"
+          class="form-control"
+          [class.is-invalid]="submitted && f['phoneNumber'].errors"
+          formControlName="phoneNumber"
+          placeholder="Enter your phone number"
+        />
+        <div *ngIf="submitted && f['phoneNumber'].errors" class="invalid-feedback d-block">
+          <span *ngIf="f['phoneNumber'].errors['required']">Phone number is required</span>
+          <span *ngIf="f['phoneNumber'].errors['pattern']">Please enter a valid phone number</span>
+        </div>
+      </div>
+
+      <!-- WhatsApp Number -->
+      <div class="mb-4">
+        <label for="whatsAppNumber" class="block text-gray-700 font-semibold mb-2">WhatsApp Number</label>
+        <input
+          type="text"
+          id="whatsAppNumber"
+          class="form-control"
+          [class.is-invalid]="submitted && f['whatsAppNumber'].errors"
+          formControlName="whatsAppNumber"
+          placeholder="Enter your WhatsApp number"
+        />
+        <div *ngIf="submitted && f['whatsAppNumber'].errors" class="invalid-feedback d-block">
+          <span *ngIf="f['whatsAppNumber'].errors['required']">WhatsApp number is required</span>
+          <span *ngIf="f['whatsAppNumber'].errors['pattern']">Please enter a valid WhatsApp number</span>
+        </div>
+      </div>
+
+      <!-- Address -->
+      <div class="mb-4">
+        <label for="address" class="block text-gray-700 font-semibold mb-2">Address</label>
+        <textarea
+          id="address"
+          class="form-control"
+          [class.is-invalid]="submitted && f['address'].errors"
+          formControlName="address"
+          placeholder="Enter your address"
+          rows="2"
+        ></textarea>
+        <div *ngIf="submitted && f['address'].errors" class="invalid-feedback d-block">
+          <span *ngIf="f['address'].errors['required']">Address is required</span>
+          <span *ngIf="f['address'].errors['minlength']">Address must be at least 5 characters</span>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="mb-4">
+        <label for="password" class="block text-gray-700 font-semibold mb-2">Password</label>
+        <input
+          type="password"
+          id="password"
+          class="form-control"
+          [class.is-invalid]="submitted && f['password'].errors"
+          formControlName="password"
+          placeholder="Enter your password"
+        />
+        <div *ngIf="submitted && f['password'].errors" class="invalid-feedback d-block">
+          <span *ngIf="f['password'].errors['required']">Password is required</span>
+          <span *ngIf="f['password'].errors['minlength']">Password must be at least 6 characters</span>
+        </div>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="mb-6">
+        <label for="confirmPassword" class="block text-gray-700 font-semibold mb-2">Confirm Password</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          class="form-control"
+          [class.is-invalid]="submitted && (f['confirmPassword'].errors || signupForm.errors?.['passwordMismatch'])"
+          formControlName="confirmPassword"
+          placeholder="Confirm your password"
+        />
+        <div *ngIf="submitted && f['confirmPassword'].errors" class="invalid-feedback d-block">
+          <span *ngIf="f['confirmPassword'].errors['required']">Please confirm your password</span>
+        </div>
+        <div *ngIf="submitted && signupForm.errors?.['passwordMismatch']" class="invalid-feedback d-block">
+          Passwords do not match
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        [disabled]="loading"
+        class="btn btn-primary w-100 py-2 font-semibold"
+      >
+        <span *ngIf="!loading">Create Account</span>
+        <span *ngIf="loading">
+          <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          Creating account...
+        </span>
+      </button>
+    </form>
+
+    <!-- Login Link -->
+    <p class="text-center mt-6 text-gray-600">
+      Already have an account?
+      <a routerLink="/auth/login" class="text-primary font-semibold hover:underline">Sign In</a>
+    </p>
+  </div>
+</div>

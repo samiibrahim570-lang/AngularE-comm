@@ -1,0 +1,64 @@
+<div class="login-container">
+  <div class="bg-white rounded-lg shadow-lg p-8 w-full">
+    <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">Welcome Back</h2>
+
+    <div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{ error }}
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <!-- Email Field -->
+      <div class="mb-6">
+        <label for="email" class="block text-gray-700 font-semibold mb-2">Email Address</label>
+        <input
+          type="email"
+          id="email"
+          class="form-control"
+          [class.is-invalid]="submitted && f['email'].errors"
+          formControlName="email"
+          placeholder="Enter your email"
+        />
+        <div *ngIf="submitted && f['email'].errors" class="invalid-feedback d-block">
+          <span *ngIf="f['email'].errors['required']">Email is required</span>
+          <span *ngIf="f['email'].errors['email']">Please enter a valid email</span>
+        </div>
+      </div>
+
+      <!-- Password Field -->
+      <div class="mb-6">
+        <label for="password" class="block text-gray-700 font-semibold mb-2">Password</label>
+        <input
+          type="password"
+          id="password"
+          class="form-control"
+          [class.is-invalid]="submitted && f['password'].errors"
+          formControlName="password"
+          placeholder="Enter your password"
+        />
+        <div *ngIf="submitted && f['password'].errors" class="invalid-feedback d-block">
+          <span *ngIf="f['password'].errors['required']">Password is required</span>
+          <span *ngIf="f['password'].errors['minlength']">Password must be at least 6 characters</span>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        [disabled]="loading"
+        class="btn btn-primary w-100 py-2 font-semibold"
+      >
+        <span *ngIf="!loading">Sign In</span>
+        <span *ngIf="loading">
+          <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          Signing in...
+        </span>
+      </button>
+    </form>
+
+    <!-- Sign Up Link -->
+    <p class="text-center mt-6 text-gray-600">
+      Don't have an account?
+      <a routerLink="/auth/signup" class="text-primary font-semibold hover:underline">Sign Up</a>
+    </p>
+  </div>
+</div>

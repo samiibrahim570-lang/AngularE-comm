@@ -1,0 +1,108 @@
+<div class="product-listing">
+  <div class="mb-8">
+    <h1 class="text-4xl font-bold text-gray-800 mb-8">Our Products</h1>
+
+    <!-- Filters Section -->
+    <div class="bg-white rounded-lg shadow p-6 mb-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <!-- Search -->
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">Search</label>
+          <input
+            type="text"
+            [(ngModel)]="searchQuery"
+            (ngModelChange)="onSearchChange()"
+            placeholder="Search products..."
+            class="form-control w-100"
+          />
+        </div>
+
+        <!-- Category Filter -->
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">Category</label>
+          <select
+            [(ngModel)]="selectedCategory"
+            (ngModelChange)="onCategoryChange()"
+            class="form-control form-select"
+          >
+            <option *ngFor="let cat of categories" [value]="cat">
+              {{ cat === 'all' ? 'All Categories' : cat }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Sort -->
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">Sort By</label>
+          <select
+            [(ngModel)]="sortBy"
+            (ngModelChange)="onSortChange()"
+            class="form-control form-select"
+          >
+            <option value="name">Name</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+          </select>
+        </div>
+
+        <!-- Results Count -->
+        <div class="flex items-end">
+          <p class="text-gray-600">
+            <strong>{{ filteredProducts.length }}</strong> products found
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="text-center py-12">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="alert alert-danger" role="alert">
+    {{ error }}
+  </div>
+
+  <!-- Products Grid -->
+  <div *ngIf="!loading && filteredProducts.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <div *ngFor="let product of filteredProducts" class="product-card bg-white rounded-lg shadow-md hover:shadow-xl transition-all">
+      <div class="h-64 bg-gray-200 overflow-hidden rounded-t-lg">
+        <img
+          [src]="product.imageUrls[0] || 'https://via.placeholder.com/300x300'"
+          [alt]="product.name"
+          class="w-full h-full object-cover hover:scale-110 transition-transform"
+        />
+      </div>
+      <div class="p-6">
+        <p class="text-sm text-primary font-semibold mb-2">{{ product.categoryName }}</p>
+        <h3 class="text-lg font-bold text-gray-800 mb-2 line-clamp-2">{{ product.name }}</h3>
+        <p class="text-gray-600 text-sm mb-4 line-clamp-2">{{ product.description }}</p>
+        <div class="flex items-center justify-between mb-4">
+          <span class="text-2xl font-bold text-primary">${{ product.price }}</span>
+          <div class="flex gap-1">
+            <span *ngFor="let i of [1,2,3,4,5]" class="text-yellow-400">★</span>
+          </div>
+        </div>
+        <button
+          (click)="viewProduct(product.id)"
+          class="btn btn-primary w-100 py-2"
+        >
+          View Details
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Products Found -->
+  <div *ngIf="!loading && filteredProducts.length === 0" class="text-center py-12 bg-white rounded-lg">
+    <p class="text-2xl text-gray-600 mb-4">No products found</p>
+    <p class="text-gray-500 mb-6">Try adjusting your filters or search query</p>
+    <button (click)="loadProducts()" class="btn btn-primary">
+      Clear Filters & Reload
+    </button>
+  </div>
+</div>

@@ -1,0 +1,133 @@
+<div class="product-details">
+  <!-- Back Button -->
+  <button (click)="goBack()" class="btn btn-outline-secondary mb-6">
+    ← Back to Products
+  </button>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="text-center py-12">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="alert alert-danger" role="alert">
+    {{ error }}
+  </div>
+
+  <!-- Product Details -->
+  <div *ngIf="product && !loading" class="bg-white rounded-lg shadow-lg overflow-hidden">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
+      <!-- Product Images -->
+      <div class="flex flex-col gap-4">
+        <div class="h-96 bg-gray-200 rounded-lg overflow-hidden">
+          <img
+            [src]="product.imageUrls[0] || 'https://via.placeholder.com/400x400'"
+            [alt]="product.name"
+            class="w-full h-full object-cover"
+          />
+        </div>
+        <div *ngIf="product.imageUrls.length > 1" class="grid grid-cols-4 gap-2">
+          <img
+            *ngFor="let image of product.imageUrls"
+            [src]="image"
+            [alt]="product.name"
+            class="h-24 object-cover rounded cursor-pointer hover:opacity-80"
+          />
+        </div>
+      </div>
+
+      <!-- Product Info -->
+      <div>
+        <p class="text-sm text-primary font-semibold mb-2">{{ product.categoryName }}</p>
+        <h1 class="text-4xl font-bold text-gray-800 mb-4">{{ product.name }}</h1>
+
+        <!-- Rating -->
+        <div class="flex gap-1 mb-6">
+          <span *ngFor="let i of [1,2,3,4,5]" class="text-yellow-400 text-xl">★</span>
+          <span class="text-gray-600 ml-2">(45 reviews)</span>
+        </div>
+
+        <!-- Price -->
+        <div class="mb-6">
+          <span class="text-4xl font-bold text-primary">PKR {{ product.price }}</span>
+          <span class="text-gray-500 line-through ml-4">PKR {{ product.price * 1.2 }}</span>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-6">
+          <h3 class="text-lg font-bold text-gray-800 mb-2">Description</h3>
+          <p class="text-gray-600 leading-relaxed">{{ product.description }}</p>
+        </div>
+
+        <!-- Stock Status -->
+        <div class="mb-6 p-4 bg-green-50 rounded border border-green-200">
+          <p class="text-green-800 font-semibold">✓ In Stock</p>
+        </div>
+
+        <!-- Quantity Selector -->
+        <div class="mb-6">
+          <label class="block text-gray-700 font-semibold mb-2">Quantity</label>
+          <div class="flex items-center gap-4">
+            <button
+              (click)="decreaseQuantity()"
+              class="btn btn-outline-secondary px-4 py-2"
+            >
+              -
+            </button>
+            <input
+              type="number"
+              [(ngModel)]="quantity"
+              min="1"
+              class="form-control w-20 text-center"
+              readonly
+            />
+            <button
+              (click)="increaseQuantity()"
+              class="btn btn-outline-secondary px-4 py-2"
+            >
+              +
+            </button>
+          </div>
+        </div>
+
+        <!-- Success Message -->
+        <div *ngIf="success" class="alert alert-success mb-6" role="alert">
+          {{ success }}
+        </div>
+
+        <!-- Add to Cart Button -->
+        <button
+          (click)="addToCart()"
+          class="btn btn-primary btn-lg w-100 py-3 font-semibold mb-4"
+        >
+          🛒 Add to Cart
+        </button>
+
+        <!-- Additional Info -->
+        <div class="bg-gray-50 p-6 rounded-lg">
+          <h3 class="font-bold text-gray-800 mb-4">Product Details</h3>
+          <ul class="space-y-3 text-gray-600">
+            <li class="flex justify-between">
+              <span>SKU:</span>
+              <span class="font-semibold">{{ product.id }}</span>
+            </li>
+            <li class="flex justify-between">
+              <span>Category:</span>
+              <span class="font-semibold">{{ product.categoryName }}</span>
+            </li>
+            <li class="flex justify-between">
+              <span>Availability:</span>
+              <span class="font-semibold text-green-600">In Stock</span>
+            </li>
+            <li class="flex justify-between">
+              <span>Shipping:</span>
+              <span class="font-semibold">Free Worldwide</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
